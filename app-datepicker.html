@@ -676,7 +676,7 @@ Custom property | Description | Default
           </div>
 
           <div id="daysOfMonth" class="days-of-month" on-tap="_chooseDaysOfMonth">
-            <template is="dom-repeat" items="[[_daysOfMonth]]" index-as="index" strip-whitespace>
+            <template id="tplDaysOfMonth" is="dom-repeat" items="[[_daysOfMonth]]" index-as="index" strip-whitespace>
               <div class$="each-days-of-month[[_isToday(item.index, _activeYear, _activeMonth)]][[_isEmptyDate(item.index)]][[_isChosenDaysOfMonth(item.index, _selectedYear, _selectedMonth, _selectedDate)]][[_isDisableDays(index, firstDayOfWeek, minDate, maxDate, item.index, _shiftedDisableDays.*, disableDates.*)]]" index="[[index]]" date="[[item.index]]" tabindex$="[[_shouldTabIndex(index, firstDayOfWeek, minDate, maxDate, item.index, _shiftedDisableDays.*, disableDates.*)]]" aria-disabled$="[[_shouldAriaDisabled(index, firstDayOfWeek, minDate, maxDate, item.index, _shiftedDisableDays.*, disableDates.*)]]" aria-label$=[[item.index]]>
                 [[item.date]]
               </div>
@@ -951,6 +951,7 @@ Custom property | Description | Default
       ],
 
       ready: function () {
+
       },
 
       attached: function () {
@@ -1702,6 +1703,14 @@ Custom property | Description | Default
         return !(_item && _item >= 0 && !_isDisableDays);
       },
 
+      //functions that sets the default date as
+      selectDefaultDate : function(){
+            var d = parseInt(new Date().getDate());
+            this._chosenDaysOfMonth = d;
+            this._selectedDate = d;
+            this.$.tplDaysOfMonth.render();
+      },
+
       // Lodash's replacements.
       _padStart: function (_string, _length, _chars) {
         var _len = -_length;
@@ -1753,6 +1762,8 @@ Custom property | Description | Default
           '--paper-button-ink-color': _colorCode,
         });
       },
+
+
 
       // TODO: To add GIF to README.md.
       // TODO: To migrate 2nd datepicker to the same month when minDate is set on the 1st datepicker.
